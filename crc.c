@@ -16,8 +16,7 @@ void convert_string_to_bytes(const char *ascii_str, unsigned char *bytes)
 
 int calculate_crc16_ccitt(const char *value)
 {
-    int crc = 0xffff;
-    int polynomial = 0x1021;
+    int crc = CRC;
 
     size_t len = strlen(value);
     unsigned char bytes[len];
@@ -25,39 +24,45 @@ int calculate_crc16_ccitt(const char *value)
 
     for(size_t i = 0; i < len; i++)
     {
-        for(int j = 0; j < CHAR_BIT; j++)
+        for(int j = 0; j < BYTES_COUNT; j++)
         {
-            int b = ((bytes[i] >> (7 - j) & 1) == 1);
-            int c15 = ((crc >> 15 & 1) == 1);
+            int b = ((bytes[i] >> (BYTES_COUNT - j - 1) & 1) == 1);
+            int c15 = ((crc >> ((BYTES_COUNT << 1) - 1) & 1) == 1);
             crc <<= 1;
-            if (c15 ^ b) crc ^= polynomial;
+            if (c15 ^ b) crc ^= POLYNOMIAL;
         }
     }
 
-    crc &= 0xffff;
+    crc &= CRC;
 
     return crc;
 }
 
 const char *build_answer(const char *inn, const char *factory_number)
 {
-    if (strlen(inn) != 12) return "ИНН должен быть из 12 цифр. Например: 009715225506";
-    if (strlen(factory_number) != 14) return "Заводской номер кассы должен быть из 14 цифр. Например: 00308300087104\0";
+    if (strlen(inn) != INN_SIZE) return "ИНН должен быть из 12 цифр. Например: 009715225506";
 
-    char source[43];
-    strcpy(source, "0000000001");
+    if (strlen(factory_number) != FACTORY_NUMBER_SIZE)
+    {
+        return "Заводской номер кассы должен быть из 14 цифр. Например: 00308300087104\0";
+    }
+
+    short source_size =
+            sizeof(INN_SOURCE_PREFIX) + sizeof(FACTORY_NUMBER_SOURCE_PREFIX) + INN_SIZE + FACTORY_NUMBER_SIZE;
+
+    char source[source_size + 1];
+    strcpy(source, INN_SOURCE_PREFIX);
     strcat(source, inn);
-    strcat(source, "000000");
+    strcat(source, FACTORY_NUMBER_SOURCE_PREFIX);
     strcat(source, factory_number);
 
     int answer = calculate_crc16_ccitt(source);
 
-    char *prefix = "00000000010";
-    char str_answer[6];
-    char *result = calloc(sizeof(*prefix) + sizeof(str_answer), sizeof(char*));
+    char str_answer[GEN_ANSWER_SIZE];
+    char *result = calloc(sizeof(RESULT_PREFIX) + sizeof(str_answer), sizeof(char*));
 
     sprintf(str_answer, "%d", answer);
-    strcpy(result, prefix);
+    strcpy(result, RESULT_PREFIX);
     strcat(result, str_answer);
 
     return result;

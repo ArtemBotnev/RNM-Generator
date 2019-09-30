@@ -1,4 +1,7 @@
-#include <stdio.h>
+//
+// Created by Artem Botnev on 26/09/2019.
+//
+
 #include "crc.h"
 
 int main() {
