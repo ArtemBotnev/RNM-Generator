@@ -40,13 +40,6 @@ int calculate_crc16_ccitt(const char *value)
 
 const char *build_answer(const char *inn, const char *factory_number)
 {
-    if (strlen(inn) != INN_SIZE) return "ИНН должен быть из 12 цифр. Например: 009715225506";
-
-    if (strlen(factory_number) != FACTORY_NUMBER_SIZE)
-    {
-        return "Заводской номер кассы должен быть из 14 цифр. Например: 00308300087104\0";
-    }
-
     short source_size =
             sizeof(INN_SOURCE_PREFIX) + sizeof(FACTORY_NUMBER_SOURCE_PREFIX) + INN_SIZE + FACTORY_NUMBER_SIZE;
 
