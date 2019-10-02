@@ -23,8 +23,6 @@ char factory_number[FACTORY_NUMBER_SIZE];
 
 void ask_and_validate(char *src, short size, char *message, const char *error_message)
 {
-    setlocale(LC_ALL, "rus");
-
     char input[size + 2];
     printf("%s\n", message);
     fgets(input, size + 2, stdin);
@@ -43,6 +41,8 @@ void ask_and_validate(char *src, short size, char *message, const char *error_me
 }
 
 int main() {
+    setlocale(LC_ALL, "rus");
+
     ask_and_validate(inn, INN_SIZE, INN_MESSAGE, INN_ERROR_MESSAGE);
     ask_and_validate(factory_number, FACTORY_NUMBER_SIZE, FACTORY_NUMBER_MESSAGE, FACTORY_NUMBER_ERROR_MESSAGE);
 
