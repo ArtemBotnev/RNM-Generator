@@ -8,7 +8,8 @@
 #define INN_SIZE 12
 #define FACTORY_NUMBER_SIZE 14
 #define GEN_ANSWER_SIZE 6
-#define BYTES_COUNT 8
+#define BITES_COUNT 8
+#define CHARS_BETWEEN_SPACES 4
 
 #define CRC 0xffff
 #define POLYNOMIAL 0x1021

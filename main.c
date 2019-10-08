@@ -15,7 +15,6 @@
 #define FACTORY_NUMBER_ERROR_MESSAGE "Заводской номер кассы должен быть из 14 цифр. Например: 00308300087104"
 #define RNM "РНМ"
 
-#include <locale.h>
 #include "crc.h"
 
 char inn[INN_SIZE];
@@ -41,8 +40,6 @@ void ask_and_validate(char *src, short size, char *message, const char *error_me
 }
 
 int main() {
-    setlocale(LC_ALL, "rus");
-
     ask_and_validate(inn, INN_SIZE, INN_MESSAGE, INN_ERROR_MESSAGE);
     ask_and_validate(factory_number, FACTORY_NUMBER_SIZE, FACTORY_NUMBER_MESSAGE, FACTORY_NUMBER_ERROR_MESSAGE);
 

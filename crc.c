@@ -7,7 +7,7 @@
 void convert_string_to_bytes(const char *ascii_str, unsigned char *bytes)
 {
     int i = 0;
-    while (ascii_str[i] != '\0')
+    while (ascii_str[i] != 0x00)
     {
         bytes[i] = ascii_str[i];
         i++;
@@ -24,10 +24,10 @@ int calculate_crc16_ccitt(const char *value)
 
     for(size_t i = 0; i < len; i++)
     {
-        for(int j = 0; j < BYTES_COUNT; j++)
+        for(int j = 0; j < BITES_COUNT; j++)
         {
-            int b = ((bytes[i] >> (BYTES_COUNT - j - 1) & 1) == 1);
-            int c15 = ((crc >> ((BYTES_COUNT << 1) - 1) & 1) == 1);
+            int b = ((bytes[i] >> (BITES_COUNT - j - 1) & 1) == 1);
+            int c15 = ((crc >> ((BITES_COUNT << 1) - 1) & 1) == 1);
             crc <<= 1;
             if (c15 ^ b) crc ^= POLYNOMIAL;
         }
@@ -36,6 +36,31 @@ int calculate_crc16_ccitt(const char *value)
     crc &= CRC;
 
     return crc;
+}
+
+char *add_spaces(const char *str, int size)
+{
+    int spaces_count = (size + 1) / CHARS_BETWEEN_SPACES;
+    int answer_size = size + spaces_count;
+    char *result = calloc(answer_size, sizeof(char*));
+
+    int shift = 0;
+    int next_space_index = CHARS_BETWEEN_SPACES;
+    for(int i = 0; i < answer_size; i++)
+    {
+        if (i == next_space_index)
+        {
+            shift++;
+            next_space_index += CHARS_BETWEEN_SPACES + 1;
+            result[i] = 0x20;
+        }
+        else
+        {
+            result[i] = str[i - shift];
+        }
+    }
+
+    return result;
 }
 
 const char *build_answer(const char *inn, const char *factory_number)
@@ -52,11 +77,12 @@ const char *build_answer(const char *inn, const char *factory_number)
     int answer = calculate_crc16_ccitt(source);
 
     char str_answer[GEN_ANSWER_SIZE];
-    char *result = calloc(sizeof(RESULT_PREFIX) + sizeof(str_answer), sizeof(char*));
+    int full_answer_size = sizeof(RESULT_PREFIX) + sizeof(str_answer);
+    char str_full_answer[full_answer_size];
 
     sprintf(str_answer, "%d", answer);
-    strcpy(result, RESULT_PREFIX);
-    strcat(result, str_answer);
+    strcpy(str_full_answer, RESULT_PREFIX);
+    strcat(str_full_answer, str_answer);
 
-    return result;
+    return add_spaces(str_full_answer, full_answer_size);
 }
