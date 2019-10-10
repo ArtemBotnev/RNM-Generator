@@ -1,6 +1,6 @@
-//
-// Created by Artem Botnev on 26/09/2019.
-//
+// RNM-Generator
+// Copyright Artem Botnev 2019
+// MIT License
 
 #ifndef RNM_GENERATOR_CRC_H
 #define RNM_GENERATOR_CRC_H

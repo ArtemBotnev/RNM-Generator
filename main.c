@@ -1,19 +1,23 @@
-//
-// Created by Artem Botnev on 26/09/2019.
-//
+// RNM-Generator
+// Copyright Artem Botnev 2019
+// MIT License
 
 #define WIN "windows"
 #if defined(_WIN32) || defined(_WIN64)
     #define PLATFORM_NAME WIN
+    #define INN_MESSAGE "Enter organization INN and press Enter"
+    #define INN_ERROR_MESSAGE "INN must contain 12 digits. Example: 009715225506"
+    #define FACTORY_NUMBER_MESSAGE "Enter factory number and press Enter"
+    #define FACTORY_NUMBER_ERROR_MESSAGE "Factory number must contain 14 digits. Example: 00308300087104"
+    #define RNM "RNM"
 #else
     #define PLATFORM_NAME "not_bad_system_:)"
+    #define INN_MESSAGE "Введите ИНН организации и нажмите ввод"
+    #define INN_ERROR_MESSAGE "ИНН должен быть из 12 цифр. Например: 009715225506"
+    #define FACTORY_NUMBER_MESSAGE "Введите заводской номер и нажмите ввод"
+    #define FACTORY_NUMBER_ERROR_MESSAGE "Заводской номер кассы должен быть из 14 цифр. Например: 00308300087104"
+    #define RNM "РНМ"
 #endif
-
-#define INN_MESSAGE "Введите инн организации и нажмите ввод"
-#define INN_ERROR_MESSAGE "ИНН должен быть из 12 цифр. Например: 009715225506"
-#define FACTORY_NUMBER_MESSAGE "Введите заводской номер и нажмите ввод"
-#define FACTORY_NUMBER_ERROR_MESSAGE "Заводской номер кассы должен быть из 14 цифр. Например: 00308300087104"
-#define RNM "РНМ"
 
 #include "crc.h"
 
