@@ -43,7 +43,8 @@ void ask_and_validate(char *src, short size, char *message, const char *error_me
     }
 }
 
-int main() {
+int main()
+{
     ask_and_validate(inn, INN_SIZE, INN_MESSAGE, INN_ERROR_MESSAGE);
     ask_and_validate(factory_number, FACTORY_NUMBER_SIZE, FACTORY_NUMBER_MESSAGE, FACTORY_NUMBER_ERROR_MESSAGE);
 

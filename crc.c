@@ -81,6 +81,17 @@ const char *build_answer(const char *inn, const char *factory_number)
     char str_full_answer[full_answer_size];
 
     sprintf(str_answer, "%d", answer);
+
+    // add lead zero
+    if (str_answer[GEN_ANSWER_SIZE - 2] == 0x00)
+    {
+        for (int i = GEN_ANSWER_SIZE - 2; i > 0; i--)
+        {
+            str_answer[i] = str_answer[i - 1];
+        }
+        str_answer[0] = '0';
+    }
+
     strcpy(str_full_answer, RESULT_PREFIX);
     strcat(str_full_answer, str_answer);
 
